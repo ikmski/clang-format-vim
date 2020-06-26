@@ -12,10 +12,23 @@ set cpoptions&vim
 
 function! clang_format#format_code()
 
-    let l:option_file = clang_format#find_option_file()
+    if g:clang_format_style == ""
+        let g:clang_format_style = "Google"
+    endif
 
-    if l:option_file != ""
-        !clang-format --style=file -i % 1>/dev/null 2>/dev/null
+    if g:clang_format_style != "file"
+
+        let $CLANG_FORMAT_STYLE = "--style=" . g:clang_format_style
+        !clang-format ${CLANG_FORMAT_STYLE} -i % 1>/dev/null 2>/dev/null
+
+    else
+
+        let l:option_file = clang_format#find_option_file()
+        if l:option_file != ""
+
+            !clang-format --style=file -i % 1>/dev/null 2>/dev/null
+
+        endif
     endif
 
 endfunction
