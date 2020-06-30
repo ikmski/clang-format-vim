@@ -12,35 +12,15 @@ set cpoptions&vim
 
 function! clang_format#format_code()
 
-    if g:clang_format_style == ""
-        let g:clang_format_style = "Google"
-    endif
-
-    if g:clang_format_style != "file"
-
-        let $CLANG_FORMAT_STYLE = "--style=" . g:clang_format_style
-        !clang-format ${CLANG_FORMAT_STYLE} -i % 1>/dev/null 2>/dev/null
-
+    let l:style = "Goole"
+    if g:clang_format_style_type != ""
+        let l:style = g:clang_format_style_type
     else
-
-        let l:option_file = clang_format#find_option_file()
-        if l:option_file != ""
-
-            !clang-format --style=file -i % 1>/dev/null 2>/dev/null
-
-        endif
+        let l:style = json_encode(g:clang_format_style)
     endif
 
-endfunction
-
-function! clang_format#find_option_file()
-
-    let l:option_file = ".clang-format"
-    if filereadable(l:option_file)
-        return l:option_file
-    endif
-
-    return ""
+    let $CLANG_FORMAT_STYLE = "--style=" . l:style
+    !clang-format ${CLANG_FORMAT_STYLE} -i % 1>/dev/null 2>/dev/null
 
 endfunction
 
