@@ -14,6 +14,9 @@ set cpoptions&vim
 autocmd BufWritePost *.c,*.h     silent call clang_format#format_code()
 autocmd BufWritePost *.cpp,*.hpp silent call clang_format#format_code()
 
+command! ClangFormatEnable call clang_format#enable()
+command! ClangFormatDisable call clang_format#disable()
+
 " 退避していたユーザ設定を戻す
 let &cpoptions = s:save_cpo
 unlet s:save_cpo

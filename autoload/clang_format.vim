@@ -10,7 +10,21 @@ endif
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
+let s:enabled = 1
+
+function! clang_format#enable()
+    let s:enabled = 1
+endfunction
+
+function! clang_format#disable()
+    let s:enabled = 0
+endfunction
+
 function! clang_format#format_code()
+
+    if s:enabled == 0
+        return
+    endif
 
     let l:style = "Goole"
     if g:clang_format_style_type != ""
